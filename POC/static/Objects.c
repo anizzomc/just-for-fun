@@ -68,7 +68,7 @@ const Class_t MetaClass = &objectMeta;
 const Class_t String = &string;
 const Class_t StringMeta = &stringMeta;
 
-Object_t new(Class_t class, va_list* list);
+Object_t new(Class_t this, Class_t class, va_list* list);
 
 void init(Object_t this, Class_t class, va_list* list) {
   class->init(this, list);
@@ -87,6 +87,7 @@ int lenght(String_t this, Class_t class, va_list* list) {
 }
 
 static Object_t objectMetaclass_new(Class_t class, va_list* list) {
+
   Object_t obj = malloc(class->instanceSize);
   obj->class = class;
 
@@ -137,9 +138,7 @@ static int string_lenght(String_t this, va_list* list) {
 
 
 static void string_init(String_t this, va_list* list) {
-  char *str = va_arg((*list), char*);
-  printf("init: %p\n", str);
-
+  char *str = va_arg(*list, char*);
   this->str = malloc(strlen(str)+1);
   strcpy(this->str, str);
 }
@@ -191,8 +190,8 @@ void loadClasses() {
   loadStringMeta(StringMeta);
 }
 
-Object_t new(Class_t class, va_list* list) {
-  return class->New(class, list);
+Object_t new(Class_t this, Class_t class, va_list* list) {
+  return this->New(this, list);
 }
 
 
@@ -218,18 +217,12 @@ mword_t send(Object_t obj, Invoke_t method, ...) {
 int main() {
   loadClasses();
   char *s = "Hello World!\n";
-  printf("String at: %p\n", s);
 
   String_t str = send(String, new, s);
   printf("---------------------------\n");
   printf("%s\n", send(str, toString));
   printf("---------------------------\n");
   
-//  printf("%s\n", send(Object, toString));
-
-
-//  String_t str = send(String, new, "Hello World!");
-// printf("%s, %d\n", send(str, toString), send(str, lenght));
 
 }
 
