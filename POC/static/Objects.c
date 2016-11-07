@@ -3,6 +3,16 @@
 #include <stdio.h>
 #include <stdarg.h>
 
+
+typedef enum {
+  new = 0,
+  init,
+  toString,
+  equals,
+  lenght
+  dummyMethod
+} Invoke_t;
+
 #define false 0
 #define true !false
 
@@ -13,7 +23,6 @@ typedef struct String_c *String_t;
 typedef uint64_t mword_t;
 
 typedef mword_t (*Method_t)(Object_t, va_list*);
-typedef mword_t (*Invoke_t)(Object_t, Class_t class, va_list*);
 
 struct Object_c {
   Class_t class;
@@ -24,10 +33,7 @@ struct Class_c {
   Class_t superclass;
   char *name;
   size_t instanceSize;
-  Method_t New;
-  Method_t init;
-  Method_t toString;
-  Method_t equals;
+  Method_t *methods;
 };
 
 
@@ -41,11 +47,7 @@ struct StringClass_c {
   Class_t superclass;
   char *name;
   size_t instanceSize;
-  Method_t New;
-  Method_t init;
-  Method_t toString;
-  Method_t equals;
-  Method_t lenght;
+  Method_t *methods;   
 };
 
 
@@ -68,30 +70,12 @@ const Class_t MetaClass = &objectMeta;
 const Class_t String = &string;
 const Class_t StringMeta = &stringMeta;
 
-Object_t new(Class_t this, Class_t class, va_list* list);
-
-void init(Object_t this, Class_t class, va_list* list) {
-  class->init(this, list);
-}
-
-char *toString(Object_t this, Class_t class, va_list* list) {
-  return class->toString(this, list);
-}
-
-int equlas(Object_t this, Class_t class, va_list* list) {
-  return class->equals(this, list);
-}
-
-int lenght(String_t this, Class_t class, va_list* list) {
-  return ((struct StringClass_c*)class)->lenght(this, list);
-}
-
 static Object_t objectMetaclass_new(Class_t class, va_list* list) {
 
   Object_t obj = malloc(class->instanceSize);
   obj->class = class;
 
-  class->init(obj, list);
+  class->methods[init](obj, list);
   
   return obj;
 }
@@ -147,39 +131,37 @@ static void string_init(String_t this, va_list* list) {
 void loadObject(Class_t class) {
   class->class = MetaClass;
   class->superclass = NULL;
-  class->init = &object_init;
-  class->toString = &object_toString;
-  class->equals = &object_equals;
-  class->New = objectMetaclass_new;
+  class->methods = malloc(sizeof(Method_t)*dummyMethod);
+  class->methods[init] = &object_init;
+  class->methods[toString] = &object_toString;
+  class->methods[equals] = &object_equals;
 }
 
 void loadMetaClass(Class_t class) {
   loadObject(class);
 
+  class->methods[new] = &objectMetaclass_new;
   class->superclass = Object;
 }
 
 void loadString(Class_t class) {
   loadObject(class);
 
-  struct StringClass_c *clazz = class;
-
-  clazz->class = StringMeta;
-  clazz->superclass = Object;
-  clazz->init = &string_init;
-  clazz->toString = &string_toString;
-  clazz->equals = &string_equals;
-  clazz->lenght = &string_lenght;
+  
+  class->class = StringMeta;
+  class->superclass = Object;
+  class->methods[init] = &string_init;
+  class->methods[toString] = &string_toString;
+  class->methods[equals] = &string_equals;
+  class->methods[lenght] = &string_lenght;
 }
 
 void loadStringMeta(Class_t class) {
   loadMetaClass(class);
   
-  struct StringClass_c *clazz = class;
 
-
-  clazz->class = StringMeta;
-  clazz->superclass = MetaClass;
+  class->class = StringMeta;
+  class->superclass = MetaClass;
 }
 
 
@@ -190,15 +172,11 @@ void loadClasses() {
   loadStringMeta(StringMeta);
 }
 
-Object_t new(Class_t this, Class_t class, va_list* list) {
-  return this->New(this, list);
-}
-
 
 mword_t super(Object_t obj, Invoke_t method, ...) {
   va_list list;
   va_start(list, method);
-  mword_t ret = method(obj, obj->class->superclass, &list);
+  mword_t ret = obj->class->superclass->methods[method](obj, &list);
   va_end(list);
   return ret;
 }
@@ -207,7 +185,9 @@ mword_t super(Object_t obj, Invoke_t method, ...) {
 mword_t send(Object_t obj, Invoke_t method, ...) {
   va_list list;
   va_start(list, method);
-  mword_t ret = method(obj, obj->class, &list);
+
+  mword_t ret = obj->class->methods[method](obj, &list);
+
   va_end(list);
   return ret;
 }
@@ -217,12 +197,14 @@ mword_t send(Object_t obj, Invoke_t method, ...) {
 int main() {
   loadClasses();
   char *s = "Hello World!\n";
+  char *s1 = "Hello World!\n";
 
   String_t str = send(String, new, s);
+  String_t str1 = send(String, new, s1);
   printf("---------------------------\n");
   printf("%s\n", send(str, toString));
   printf("---------------------------\n");
-  
+  printf("%d\n", send(str, equals, str1));
 
 }
 
