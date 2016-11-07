@@ -14,6 +14,7 @@ typedef void* (*Method_p)(Object_t, ...);
 struct Method {
 	char *name;
 	size_t arguments;
+	int va_list;
 	Method_p ptr;
 };
 
@@ -37,17 +38,15 @@ struct String {
 typedef struct String* String_t;
 
 //Statically Init
-static struct Class object_classes[2] = {
-	{object_classes + 1, NULL, NULL, sizeof(struct Object), "Object"},
-	{object_classes + 1, object_classes, NULL, sizeof(struct Class), "Metaclass"}
-};	
+static struct Class objectClass = {NULL, NULL, NULL, sizeof(struct Object), "Object"};
+static struct Class objectMetaClass =	{NULL, &objectClass, NULL, sizeof(struct Class), "Metaclass"};
 
-Class_t ObjectClass = object_classes;
-Class_t MetaClass = object_classes+1;
+Class_t ObjectClass = &objectClass;
+Class_t MetaClass = &objectMetaClass;
 
 static struct Class string_classes[2] = {
-	{ string_classes+1, object_classes, NULL, sizeof(struct String), "String"},
-	{ string_classes+1, object_classes+1, NULL, sizeof(struct Class), "StringMetaClass"}
+	{ string_classes+1, &objectClass, NULL, sizeof(struct String), "String"},
+	{ string_classes+1, &objectMetaClass, NULL, sizeof(struct Class), "StringMetaClass"}
 };
 
 Class_t StringClass = string_classes;
@@ -64,7 +63,7 @@ Method_t _find(Class_t class, char* method);
 
 uint32_t _invoke(Method_p m, Object_t obj, size_t argc, uint32_t *arguments);
 
-Object_t MetaClass_new(Class_t class, ...);
+Object_t MetaClass_new(Class_t class, va_list list);
 
 char *MetaClass_name(Class_t class) {
 	return class->name;
@@ -170,32 +169,47 @@ uint32_t _resolv(Object_t obj, char *method, int super, ...) {
 	for (i = 0 ; i < m->arguments ; i++){
 		elements[i] = va_arg(arg_list, uint32_t);
 	}
-	va_end(arg_list);
 
-	return _invoke(m->ptr, obj, m->arguments, elements);
+	uint32_t ret;
+
+	if(m->va_list) {
+		ret = m->ptr(obj, arg_list);
+	} else {
+		ret = _invoke(m->ptr, obj, m->arguments, elements);
+	}
+
+	va_end(arg_list);
+	return ret;
 }
 
 
 //Methods:
-struct Method MetaClass_new_m = {"new", 0, MetaClass_new};
-struct Method MetaClass_name_m = {"name", 0, MetaClass_name};
+struct Method MetaClass_new_m = {"new", 0, 1, MetaClass_new};
+struct Method MetaClass_name_m = {"name", 0, 0, MetaClass_name};
 
-struct Method Object_initialize_m = {"initialize", 0, Object_initialize};
-struct Method Object_toString_m = {"toString", 0, Object_toString};
-struct Method Object_equals_m = {"equals", 1, Object_equals};
-struct Method Object_class_m = {"class", 0, Object_class};
+struct Method Object_initialize_m = {"initialize", 0, 1, Object_initialize};
+struct Method Object_toString_m = {"toString", 0, 0, Object_toString};
+struct Method Object_equals_m = {"equals", 1, 0, Object_equals};
+struct Method Object_class_m = {"class", 0, 0, Object_class};
 
-struct Method String_initialize_m = {"initialize", 1, String_initialize};
-struct Method String_lenght_m = {"lenght", 0, String_length};
-struct Method String_toString_m = {"toString", 0, String_toString};
-struct Method String_equals_m = {"equals", 1, String_equals};
+struct Method String_initialize_m = {"initialize", 1, 0,String_initialize};
+struct Method String_lenght_m = {"lenght", 0, 0, String_length};
+struct Method String_toString_m = {"toString", 0, 0, String_toString};
+struct Method String_equals_m = {"equals", 1, 0, String_equals};
 
 
 static void loadClasses() {
+	MetaClass->class = MetaClass;
+	MetaClass->superclass = ObjectClass;
 	MetaClass->methods = d_hash_new((d_hash_fnc_t)&strHash, (d_hash_eqfnc_t) &str_eq);
+
+
 	loadMethod(MetaClass, "new", &MetaClass_new_m);
 	loadMethod(MetaClass, "name", &MetaClass_name_m);
 	
+
+	ObjectClass->superclass = NULL;
+	ObjectClass->class = MetaClass;
 
 	//Load Object
 	ObjectClass->methods = d_hash_new((d_hash_fnc_t)&strHash, (d_hash_eqfnc_t) &str_eq);
@@ -234,7 +248,7 @@ static unsigned str_eq(char* str1, char* str2) {
 }
 
 
-Object_t MetaClass_new(Class_t class, ...) {
+Object_t MetaClass_new(Class_t class, va_list list) {
 	uint32_t elements[128];
 	int i;
 
@@ -249,12 +263,9 @@ Object_t MetaClass_new(Class_t class, ...) {
 		abort();
 	}
 
-	va_list arg_list;
-	va_start(arg_list, class);  
 	for (i = 0 ; i < m->arguments ; i++){
-		elements[i] = va_arg(arg_list, uint32_t);
+		elements[i] = va_arg(list, uint32_t);
 	}
-	va_end(arg_list);
 
 	_invoke(m->ptr, obj, m->arguments, elements);
 
