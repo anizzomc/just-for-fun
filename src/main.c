@@ -3,11 +3,12 @@
 #include <JFF.h>
 #include <Object.h>
 #include <String.h>
-
+#include <Integer.h>
 
 ClassLoader_t classLoaders[] = {
   objectClassLoad,
   stringClassLoad,
+  integerClassLoad
 };
 
 const int classLoadersQty = sizeof(classLoaders)/sizeof(ClassLoader_t);
@@ -29,6 +30,9 @@ int main() {
   printf("%d\n", send(str, lenght));
   output(send(str, getClass));
   output(send(send(str, getClass), getClass));
+
+  Integer_t i = send(Integer, new, 10);
+  output(i);
 
 
 }
