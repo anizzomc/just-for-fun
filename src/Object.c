@@ -22,6 +22,9 @@ static Object_t _new(Class_t class, va_list* list) {
   return obj;
 }
 
+static Class_t _getClass(Object_t this, va_list* list) {
+  return this->class;
+}
 
 static void _init(Object_t this, va_list* list) {
   return;
@@ -32,19 +35,27 @@ static int _equals(Object_t this, va_list* list) {
   return other == this;
 }
 
-static char* _toString(Object_t obj, va_list* list) {
+static char* _toString(Object_t this, va_list* list) {
   char *ret = malloc(60); //TODO: Collect memory
 
-  sprintf(ret, "%s@%p", obj->class->name, obj);
+  sprintf(ret, "%s@%p", this->class->name, this);
 
   return ret;
 }
 
+static char* _classToString(Class_t this, va_list* list) {
+  char *ret = malloc(strlen(this->name)+1); //TODO: Collect memory
+  strcpy(ret, this->name);
+  return ret;
+}
+
 void loadObject(Class_t class) {
+
   class->class = MetaClass;
   class->superclass = NULL;
   class->methods = malloc(sizeof(Method_t)*_dummyMethod);
   class->methods[init] = (Method_t) &_init;
+  class->methods[getClass] = (Method_t) &_getClass;
   class->methods[toString] = (Method_t) &_toString;
   class->methods[equals] = (Method_t) &_equals;
 }
@@ -53,6 +64,7 @@ void loadObjectClass(Class_t class) {
   loadObject(class);
 
   class->methods[new] = (Method_t)&_new;
+  class->methods[toString] = (Method_t)&_classToString;
   class->superclass = Object;
 }
 

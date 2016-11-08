@@ -12,6 +12,9 @@ ClassLoader_t classLoaders[] = {
 
 const int classLoadersQty = sizeof(classLoaders)/sizeof(ClassLoader_t);
 
+void output(Object_t obj) {
+  printf("%s\n", send(obj, toString));
+}
 
 int main() {
   jff_loadClasses();
@@ -21,9 +24,12 @@ int main() {
 
   String_t str = send(String, new, s);
   String_t str1 = send(String, new, s1);
-  printf("%s\n", send(str, toString));
+  output(str);
   printf("%d\n", send(str, equals, str1));
   printf("%d\n", send(str, lenght));
+  output(send(str, getClass));
+  output(send(send(str, getClass), getClass));
+
 
 }
 

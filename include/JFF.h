@@ -19,6 +19,7 @@ extern ClassLoader_t classLoaders[];
 typedef enum {
   new = 0,
   init,
+  getClass,
   toString,
   equals,
   lenght,

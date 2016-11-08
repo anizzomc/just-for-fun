@@ -7,18 +7,25 @@
 #include <extend/String.h>
 #include <String.h>
 
-static struct Class_c string = {NULL, NULL, "String", sizeof(struct Class_c)};
-static struct Class_c stringMeta = {NULL, NULL, "StringMeta", sizeof(struct Class_c)};
-
-
-const Class_t String = &string;
-const Class_t StringMeta = &stringMeta;
-
 struct String_c {
   struct Class_c* class;
   char *str;
 };
 
+struct StringClass_c {
+  Class_t class;
+  Class_t superclass;
+  char *name;
+  size_t instanceSize;
+  Method_t *methods;
+};
+
+
+static struct StringClass_c string = {NULL, NULL, "String", sizeof(struct StringClass_c)};
+static struct StringClass_c stringMeta = {NULL, NULL, "StringMeta", sizeof(struct StringClass_c)};
+
+const Class_t String = &string;
+const Class_t StringMeta = &stringMeta;
 
 static char* _toString(String_t this, va_list* list) {
   //TODO: Collect memory
@@ -54,21 +61,23 @@ static void _init(String_t this, va_list* list) {
 void loadString(Class_t class) {
   loadObject(class);
 
-  
-  class->class = StringMeta;
-  class->superclass = Object;
-  class->methods[init] = (Method_t) &_init;
-  class->methods[toString] = (Method_t) &_toString;
-  class->methods[equals] = (Method_t) &_equals;
-  class->methods[lenght] = (Method_t) &_lenght;
+  struct StringClass_c *clazz = class;
+
+  clazz->class = StringMeta;
+  clazz->superclass = Object;
+  clazz->methods[init] = (Method_t) &_init;
+  clazz->methods[toString] = (Method_t) &_toString;
+  clazz->methods[equals] = (Method_t) &_equals;
+  clazz->methods[lenght] = (Method_t) &_lenght;
 }
 
 void loadStringClass(Class_t class) {
   loadObjectClass(class);
   
+  struct StringClass_c *clazz = class;
 
-  class->class = StringMeta;
-  class->superclass = MetaClass;
+  clazz->class = StringMeta;
+  clazz->superclass = MetaClass;
 }
 
 void stringClassLoad() {
