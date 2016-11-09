@@ -4,27 +4,14 @@
 #include <stdint.h>
 #include <stdarg.h>
 
+#include <JFFConfig.h>
+
 #define false 0
 #define true !false
 
 //Base Object Definition
 typedef struct Object_c* Object_t;
 typedef struct Class_c* Class_t;
-
-//Class To be loaded
-typedef void (*ClassLoader_t)(void);
-extern ClassLoader_t classLoaders[];
-
-// All method names goes here
-typedef enum {
-  new = 0,
-  init,
-  getClass,
-  toString,
-  equals,
-  lenght,
-  _dummyMethod //This should be always defined last
-} Invoke_t;
 
 typedef uint64_t mword_t;
 

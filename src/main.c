@@ -5,14 +5,6 @@
 #include <String.h>
 #include <Integer.h>
 
-ClassLoader_t classLoaders[] = {
-  objectClassLoad,
-  stringClassLoad,
-  integerClassLoad
-};
-
-const int classLoadersQty = sizeof(classLoaders)/sizeof(ClassLoader_t);
-
 void output(Object_t obj) {
   printf("%s\n", send(obj, toString));
 }
