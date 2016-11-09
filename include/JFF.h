@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <stdarg.h>
 
-#include <JFFConfig.h>
+#include <Methods.h>
 
 #define false 0
 #define true !false
