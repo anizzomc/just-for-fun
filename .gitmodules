@@ -1,0 +1,3 @@
+[submodule "lib/D"]
+	path = lib/D
+	url = https://github.com/anizzomc/D
