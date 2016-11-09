@@ -3,6 +3,7 @@
 #include <JFF.h>
 #include <extend/Object.h>
 #include <ClassLoaders.h>
+#include <mm.h>
 
 mword_t super(Object_t obj, Invoke_t method, ...) {
   va_list list;
@@ -24,7 +25,9 @@ mword_t send(Object_t obj, Invoke_t method, ...) {
 }
 
 
-void jff_loadClasses() {
+void JFF_init() {
+  D_mm_init();
+
   int i;
   int qty = sizeof(classLoaders)/sizeof(ClassLoader_t);
 

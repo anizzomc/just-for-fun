@@ -10,7 +10,7 @@ void output(Object_t obj) {
 }
 
 int main() {
-  jff_loadClasses();
+  JFF_init();
 
   char *s = "Hello World!";
   char *s1 = "Hello World!";

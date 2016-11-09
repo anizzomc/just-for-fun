@@ -23,7 +23,7 @@ mword_t super(Object_t obj, Invoke_t method, ...);
 
 //Class Loader
 // TODO: Should be replaced by "init"?
-void jff_loadClasses();
+void JFF_init();
 
 
 #endif
