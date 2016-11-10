@@ -41,6 +41,13 @@ String
 StringMeta
 10
 ```
+# Checking out
+Before you checkout the repo, run
+
+```
+$> git submodule init
+$> git submodule update
+```
 
 # Compiling & Executing 
 ```$> make && ./JFF.out``` 
