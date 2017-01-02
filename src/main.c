@@ -1,33 +1,15 @@
-#include <stdio.h>
 
 #include <JFF.h>
-#include <Object.h>
-#include <String.h>
-#include <Integer.h>
+#include <Application.h>
 
-void output(Object_t obj) {
-
-  String_t str = send(obj, toString);
-  printf("%s\n", send(str, toCharArray));
-}
-
-int main() {
+int main(int argc, char *argv[]) {
   JFF_init();
 
-  char *s = "Hello World!";
-  char *s1 = "Hello World!";
+  Application_t app = send(Application, new, argc, argv);
 
-  String_t str = send(String, new, s);
-  String_t str1 = send(String, new, s1);
-  output(str);
-  printf("%d\n", send(str, equals, str1));
-  printf("%d\n", send(str, lenght));
-  output(send(str, getClass));
-  output(send(send(str, getClass), getClass));
+  int ret = send(app, start);
 
-  Integer_t i = send(Integer, new, 10);
-  output(i);
-
-
+  JFF_release();
+  return ret;
 }
 
