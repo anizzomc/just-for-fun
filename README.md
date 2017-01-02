@@ -11,7 +11,7 @@ Object Oriented Framework to Work with C.
 #include <Integer.h>
 
 void output(Object_t obj) {
-  printf("%s\n", send(obj, toString));
+  printf("%s\n", send(send(obj, toString), toCharArray);
 }
 
 int main() {
