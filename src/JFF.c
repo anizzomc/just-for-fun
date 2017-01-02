@@ -4,6 +4,10 @@
 #include <extend/Object.h>
 #include <ClassLoaders.h>
 #include <mm.h>
+#include <mm_pool.h>
+
+
+D_mm_pool_conf pool_conf = {100, 100};
 
 mword_t super(Object_t obj, Invoke_t method, ...) {
   va_list list;
@@ -27,6 +31,7 @@ mword_t send(Object_t obj, Invoke_t method, ...) {
 
 void JFF_init() {
   D_mm_init();
+  D_mm_pool_init(pool_conf);
 
   int i;
   int qty = sizeof(classLoaders)/sizeof(ClassLoader_t);

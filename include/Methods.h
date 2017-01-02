@@ -5,6 +5,7 @@
 typedef enum {
   new = 0,
   init,
+  dealloc,
   getClass,
   toString,
   equals,
