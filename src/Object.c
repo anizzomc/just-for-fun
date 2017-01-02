@@ -1,5 +1,6 @@
 #include <JFF.h>
 #include <Object.h>
+#include <String.h>
 #include <extend/Object.h>
 
 #include <stdlib.h>
@@ -47,17 +48,15 @@ static int _equals(Object_t this, va_list* list) {
 }
 
 static char* _toString(Object_t this, va_list* list) {
-  char *ret = D_mm_pool_add(D_mm_alloc(60, NULL)); 
+  char buffer[60];
 
-  sprintf(ret, "%s@%p", this->class->name, this);
+  sprintf(buffer, "%s@%p", this->class->name, this);
 
-  return ret;
+  return send(String, new, buffer);
 }
 
 static char* _classToString(Class_t this, va_list* list) {
-  char *ret = D_mm_pool_add(D_mm_alloc(strlen(this->name)+1, NULL));
-  strcpy(ret, this->name);
-  return ret;
+  return send(String, new, this->name);
 }
 
 void loadObject(Class_t class) {

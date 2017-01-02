@@ -1,5 +1,6 @@
 
 #include <extend/Integer.h>
+#include <String.h>
 
 struct Integer_c {
   struct Class_c* class;
@@ -25,11 +26,10 @@ static void _init(Integer_t this, va_list* list) {
   this->value = value;
 }
 
-static char* _toString(Integer_t this, va_list* list) {
-  //TODO: Collect memory
-  char *ret = malloc(11);
+static String_t _toString(Integer_t this, va_list* list) {
+  char ret[64];
   sprintf(ret, "%d", this->value);
-  return ret;
+  return send(String, new, ret);
 }
 
 static int _equals(Integer_t this, va_list* list) {

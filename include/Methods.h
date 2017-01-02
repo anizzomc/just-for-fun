@@ -10,6 +10,7 @@ typedef enum {
   toString,
   equals,
   lenght,
+  toCharArray,
   _dummyMethod //This should be always defined last
 } Invoke_t;
 

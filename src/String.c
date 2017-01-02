@@ -7,6 +7,9 @@
 #include <extend/String.h>
 #include <String.h>
 
+#include <mm.h>
+#include <mm_pool.h>
+
 struct String_c {
   struct Class_c* class;
   char *str;
@@ -27,11 +30,14 @@ static struct StringClass_c stringMeta = {NULL, NULL, "StringMeta", sizeof(struc
 const Class_t String = &string;
 const Class_t StringMeta = &stringMeta;
 
-static char* _toString(String_t this, va_list* list) {
-  //TODO: Collect memory
-  char *ret = malloc(strlen(this->str)+1);
+static char* _toCharArray(String_t this, va_list* list) {
+  char *ret = D_mm_pool_add(D_mm_alloc(strlen(this->str)+1, NULL));
   strcpy(ret, this->str);
   return ret;
+}
+
+static String_t _toString(String_t this, va_list* list) {
+  return this;
 }
 
 static int _equals(String_t this, va_list* list) {
@@ -67,6 +73,7 @@ void loadString(Class_t class) {
   clazz->superclass = Object;
   clazz->methods[init] = (Method_t) &_init;
   clazz->methods[toString] = (Method_t) &_toString;
+  clazz->methods[toCharArray] = (Method_t) &_toCharArray;
   clazz->methods[equals] = (Method_t) &_equals;
   clazz->methods[lenght] = (Method_t) &_lenght;
 }

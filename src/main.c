@@ -6,7 +6,9 @@
 #include <Integer.h>
 
 void output(Object_t obj) {
-  printf("%s\n", send(obj, toString));
+
+  String_t str = send(obj, toString);
+  printf("%s\n", send(str, toCharArray));
 }
 
 int main() {
