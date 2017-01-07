@@ -1,5 +1,5 @@
-#ifndef _JFFCONFIG_H_
-#define _JFFCONFIG_H_
+#ifndef _JSFFCONFIG_H_
+#define _JSFFCONFIG_H_
 
 // All method names goes here
 typedef enum {
@@ -9,7 +9,7 @@ typedef enum {
   getClass,
   toString,
   equals,
-  lenght,
+  length,
   toCharArray,
   nextID,
   getId,

@@ -21,7 +21,7 @@ int main() {
   String_t str1 = send(String, new, s1);
   output(str);
   printf("%d\n", send(str, equals, str1));
-  printf("%d\n", send(str, lenght));
+  printf("%d\n", send(str, length));
   output(send(str, getClass));
   output(send(send(str, getClass), getClass));
 

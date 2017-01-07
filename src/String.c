@@ -52,7 +52,7 @@ static int _equals(String_t this, va_list* list) {
   return strcmp(this->str, other->str) == 0;
 }
 
-static int _lenght(String_t this, va_list* list) {
+static int _length(String_t this, va_list* list) {
   return strlen(this->str);
 }
 
@@ -81,7 +81,7 @@ void loadString(Class_t class) {
   clazz->methods[toString] = (Method_t) &_toString;
   clazz->methods[toCharArray] = (Method_t) &_toCharArray;
   clazz->methods[equals] = (Method_t) &_equals;
-  clazz->methods[lenght] = (Method_t) &_lenght;
+  clazz->methods[length] = (Method_t) &_length;
 }
 
 void loadStringClass(Class_t class) {
