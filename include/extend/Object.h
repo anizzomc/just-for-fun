@@ -9,11 +9,11 @@
 #include <Object.h>
 
 
-extern const Class_t MetaClass;
+extern const Class_t Class;
 
 void loadObject(Class_t class);
 
-void loadObjectClass(Class_t class);
+void loadClass(Class_t class);
 
 
 #endif
