@@ -15,11 +15,11 @@ struct IntegerClass_c {
   Method_t *methods;
 };
 
-static struct IntegerClass_c integer = {NULL, NULL, "Integer", sizeof(struct IntegerClass_c)};
-static struct IntegerClass_c integerMeta = {NULL, NULL, "IntegerMeta", sizeof(struct IntegerClass_c)};
+static struct IntegerClass_c integer = {};
+static struct Class_c integerMeta = {};
 
 const Class_t Integer = &integer;
-const Class_t IntegerMeta = &integerMeta;
+const Class_t IntegerClass = &integerMeta;
 
 static void _init(Integer_t this, va_list* list) {
   int value = va_arg(*list, int);
@@ -51,9 +51,11 @@ void loadInteger(Class_t class) {
 
   struct IntegerClass_c *clazz = class;
 
-  clazz->class = IntegerMeta;
-
+  clazz->class = IntegerClass;
   clazz->superclass = Object;
+  clazz->name = "Integer";
+  clazz->instanceSize = sizeof(struct Integer_c);
+
 
   clazz->methods[init] = (Method_t) &_init;
   clazz->methods[toString] = (Method_t) &_toString;
@@ -63,17 +65,15 @@ void loadInteger(Class_t class) {
 
 
 void loadIntegerClass(Class_t class) {
-  loadObjectClass(class);
-  
-  struct IntegerClass_c *clazz = class;
+  loadClass(class);
 
-  clazz->class = IntegerMeta;
-  clazz->superclass = MetaClass;
+  class->name = "IntegerClass";
 }
+
 
 void integerClassLoad() {
   loadInteger(Integer);
-  loadIntegerClass(IntegerMeta);
+  loadIntegerClass(IntegerClass);
 }
 
 

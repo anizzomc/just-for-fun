@@ -8,11 +8,13 @@ extern ClassLoader_t classLoaders[];
 void objectClassLoad();
 void stringClassLoad();
 void integerClassLoad();
+void entityClassLoad();
 
 ClassLoader_t classLoaders[] = {
   objectClassLoad,
   stringClassLoad,
-  integerClassLoad
+  integerClassLoad,
+  entityClassLoad
 };
 
 #endif

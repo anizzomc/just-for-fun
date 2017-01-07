@@ -38,7 +38,7 @@ Hello World!
 1
 12
 String
-StringMeta
+StringClass
 10
 ```
 # Checking out

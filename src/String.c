@@ -24,11 +24,11 @@ struct StringClass_c {
 };
 
 
-static struct StringClass_c string = {NULL, NULL, "String", sizeof(struct StringClass_c)};
-static struct StringClass_c stringMeta = {NULL, NULL, "StringMeta", sizeof(struct StringClass_c)};
+static struct StringClass_c string = {};
+static struct Class_c stringClass = {};
 
 const Class_t String = &string;
-const Class_t StringMeta = &stringMeta;
+const Class_t StringClass = &stringClass;
 
 static char* _toCharArray(String_t this, va_list* list) {
   char *ret = D_mm_pool_add(D_mm_alloc(strlen(this->str)+1, NULL));
@@ -69,8 +69,14 @@ void loadString(Class_t class) {
 
   struct StringClass_c *clazz = class;
 
-  clazz->class = StringMeta;
+  // Basic Properties
+  clazz->class = StringClass;
   clazz->superclass = Object;
+  clazz->name = "String";
+  clazz->instanceSize = sizeof(struct String_c);
+
+
+  // Instance Methods
   clazz->methods[init] = (Method_t) &_init;
   clazz->methods[toString] = (Method_t) &_toString;
   clazz->methods[toCharArray] = (Method_t) &_toCharArray;
@@ -79,15 +85,13 @@ void loadString(Class_t class) {
 }
 
 void loadStringClass(Class_t class) {
-  loadObjectClass(class);
-  
-  struct StringClass_c *clazz = class;
+  loadClass(class);
 
-  clazz->class = StringMeta;
-  clazz->superclass = MetaClass;
+  class->name = "StringClass";
+
 }
 
 void stringClassLoad() {
   loadString(String);
-  loadStringClass(StringMeta);
+  loadStringClass(StringClass);
 }
