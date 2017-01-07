@@ -12,6 +12,7 @@ typedef enum {
   lenght,
   toCharArray,
   nextID,
+  getId,
   _dummyMethod //This should be always defined last
 } Invoke_t;
 

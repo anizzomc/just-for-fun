@@ -68,12 +68,13 @@ void loadEntity(Class_t class) {
   clazz->instanceSize = sizeof(struct Entity_c);
 
   // Custom Properties
-  clazz->idCounter = 0;
+  clazz->idCounter = 1;
 
   // Instance Methods
   clazz->methods[init] = (Method_t) &_init;
   clazz->methods[toString] = (Method_t) &_toString;
   clazz->methods[equals] = (Method_t) &_equals;
+  clazz->methods[getId] = (Method_t) &_getId;
 }
 
 
