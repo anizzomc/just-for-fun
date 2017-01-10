@@ -55,6 +55,14 @@ static char* _toString(Object_t this, va_list* list) {
   return send(String, new, buffer);
 }
 
+static void _retain(Object_t this, va_list* list) {
+  D_mm_retain(this);
+}
+
+static void _release(Object_t this, va_list* list) {
+  D_mm_release(this);
+}
+
 static char* _classToString(Class_t this, va_list* list) {
   return send(String, new, this->name);
 }
@@ -74,6 +82,8 @@ void loadObject(Class_t class) {
   class->methods = malloc(sizeof(Method_t)*_dummyMethod);
   class->methods[init] = (Method_t) &_init;
   class->methods[dealloc] = (Method_t) &_dealloc;
+  class->methods[retain] = (Method_t) &_retain;
+  class->methods[release] = (Method_t) &_release;
   class->methods[getClass] = (Method_t) &_getClass;
   class->methods[toString] = (Method_t) &_toString;
   class->methods[equals] = (Method_t) &_equals;
