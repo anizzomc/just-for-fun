@@ -2,10 +2,10 @@
 
 #include <JFF.h>
 #include <extend/Object.h>
-#include <ClassLoaders.h>
 #include <mm.h>
 #include <mm_pool.h>
 
+void LoadClasses(void);
 
 D_mm_pool_conf pool_conf = {100, 100};
 
@@ -33,10 +33,8 @@ void JFF_init() {
   D_mm_init();
   D_mm_pool_init(pool_conf);
 
-  int i;
-  int qty = sizeof(classLoaders)/sizeof(ClassLoader_t);
-
-  for(i = 0 ; i < qty ; i++) {
-    classLoaders[i]();
-  }
+  LoadClasses();
+ 
 }
+
+

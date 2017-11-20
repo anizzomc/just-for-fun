@@ -91,7 +91,7 @@ void loadStringClass(Class_t class) {
 
 }
 
-void stringClassLoad() {
+void ClassLoader_String() {
   loadString(String);
   loadStringClass(StringClass);
 }

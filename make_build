@@ -1,0 +1,2 @@
+all:
+	gcc *.c src/*.c  -Iinc/ -I../jff/lib/D/include -Llib/ -ld -o ../App.out

@@ -5,6 +5,9 @@
 #include <String.h>
 #include <Integer.h>
 
+#include <Debug.h>
+#define INFO_DEBUG 
+
 void output(Object_t obj) {
 
   String_t str = send(obj, toString);
@@ -12,6 +15,7 @@ void output(Object_t obj) {
 }
 
 int main() {
+  INFO("Init\n");
   JFF_init();
 
   char *s = "Hello World!";
@@ -19,9 +23,11 @@ int main() {
 
   String_t str = send(String, new, s);
   String_t str1 = send(String, new, s1);
+
   output(str);
   printf("%d\n", send(str, equals, str1));
   printf("%d\n", send(str, length));
+
   output(send(str, getClass));
   output(send(send(str, getClass), getClass));
 

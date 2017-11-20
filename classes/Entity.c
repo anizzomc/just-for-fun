@@ -86,7 +86,7 @@ void loadEntityClass(Class_t class) {
   class->methods[nextID] = (Method_t)&_nextID;
 }
 
-void entityClassLoad() {
+void ClassLoader_Entity() {
   loadEntity(Entity);
   loadEntityClass(EntityClass);
 }

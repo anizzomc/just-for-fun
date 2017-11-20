@@ -1,7 +1,7 @@
 #ifndef _INTEGER_H_
 #define _INTEGER_H_
 
-void integerClassLoad();
+void ClassLoader_Integer();
 
 typedef struct Integer_c* Integer_t;
 

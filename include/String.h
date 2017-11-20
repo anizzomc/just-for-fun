@@ -1,7 +1,7 @@
 #ifndef _STRING_H_
 #define _STRING_H_
 #include <JFF.h> 
-void stringClassLoad();
+void ClassLoader_String();
 
 typedef struct String_c* String_t;
 

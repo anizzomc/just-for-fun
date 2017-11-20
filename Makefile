@@ -1,25 +1,28 @@
-INC_PATH=include/
-
-TARGET=JFF.out
-ENTITY=Entity.out
-D=lib/libd.a
-
-all: $(TARGET) $(ENTITY)
-
-$(TARGET): $(D)
-	gcc main.c src/*.c -Llib/ -ld -I$(INC_PATH) -Ilib/D/include -o $(TARGET)
-
-$(ENTITY): $(D)
-	gcc entity.c src/*.c -Llib/ -ld -I$(INC_PATH) -Ilib/D/include -o $(ENTITY)
+include ../Makefile.inc
+CLASS_LOADER=../build/classLoader.c
+CUSTOM_CLASSES=../$(CUSTOM_CLASSES_PATH)
 
 
-$(D):
-	cd lib/D; make all
-	mv lib/D/out/libd.a lib/.
+all:
+	echo $(CUSTOM_CLASSES)
+	mkdir -p ../build/src
+	mkdir -p ../build/inc/extend
+	mkdir -p ../build/lib
+	cp classes/*.c ../build/src/
+	cp $(CUSTOM_CLASSES)*.c ../build/src/
+	./classLoader.sh > $(CLASS_LOADER)
+
+	cd lib/D ; make
+	mv lib/D/out/*.a lib/
+
+	cp lib/*.a ../build/lib
+	cp src/*.c ../build/
+	cp -r include/*.h ../build/inc
+	cp -r include/extend/*.h ../build/inc/extend
+	cp make_build ../build/Makefile
+	cd ../build; make
 
 
 clean:
-	rm -f $(D)
-	rm -f *.out
-	cd lib/D; make clean
-	rm -f *.o
+	rm -rf ../build/
+
