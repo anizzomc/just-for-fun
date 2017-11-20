@@ -2,7 +2,7 @@
 #define _ENTITY_H_
 #include <JFF.h> 
 
-void entityClassLoad();
+void ClassLoader_Entity();
 
 /**
  The intention of this class is to give an

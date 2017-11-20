@@ -2,7 +2,7 @@
 #define _OBJECT_H_
 #include <JFF.h>
 
-void objectClassLoad();
+void ClassLoader_Object();
 
 extern const Class_t Object;
 

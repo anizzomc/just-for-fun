@@ -102,7 +102,7 @@ void loadClass(Class_t class) {
 }
 
 
-void objectClassLoad() {
+void ClassLoader_Object() {
   loadObject(Object);
   loadClass(Class);
 }

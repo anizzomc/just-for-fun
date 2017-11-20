@@ -35,3 +35,6 @@
 #OSX Files
 *.DS_Store
 
+#Build folder
+build/*
+

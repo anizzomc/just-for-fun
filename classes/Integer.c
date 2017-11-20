@@ -71,9 +71,7 @@ void loadIntegerClass(Class_t class) {
 }
 
 
-void integerClassLoad() {
+void ClassLoader_Integer() {
   loadInteger(Integer);
   loadIntegerClass(IntegerClass);
 }
-
-
