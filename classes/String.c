@@ -30,6 +30,8 @@ static struct Class_c stringClass = {};
 const Class_t String = &string;
 const Class_t StringClass = &stringClass;
 
+static const Class_t class = &string;
+
 static char* _toCharArray(String_t this, va_list* list) {
   char *ret = D_mm_pool_add(D_mm_alloc(strlen(this->str)+1, NULL));
   strcpy(ret, this->str);

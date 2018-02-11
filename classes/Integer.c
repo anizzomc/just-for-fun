@@ -21,6 +21,8 @@ static struct Class_c integerMeta = {};
 const Class_t Integer = &integer;
 const Class_t IntegerClass = &integerMeta;
 
+static const Class_t class = &integer;
+
 static void _init(Integer_t this, va_list* list) {
   int value = va_arg(*list, int);
   this->value = value;

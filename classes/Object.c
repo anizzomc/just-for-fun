@@ -11,10 +11,12 @@
 #include <mm_pool.h>
 
 static struct Class_c object = {};
-static struct Class_c class = {};
+static struct Class_c class_c = {};
 
 const Class_t Object = &object;
-const Class_t Class = &class;
+const Class_t Class = &class_c;
+
+static const Class_t class = &object;
 
 static void _dealloc_handler(Object_t);
 

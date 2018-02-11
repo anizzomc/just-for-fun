@@ -24,6 +24,8 @@ static struct Class_c entityClass = {};
 const Class_t Entity = &entity;
 const Class_t EntityClass = &entityClass;
 
+static const Class_t class = &entity;
+
 static void _init(Entity_t this, va_list* list) {
   this->id = send(Entity, nextID);
 }
