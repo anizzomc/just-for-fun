@@ -15,5 +15,4 @@ void loadObject(Class_t class);
 
 void loadClass(Class_t class);
 
-
 #endif

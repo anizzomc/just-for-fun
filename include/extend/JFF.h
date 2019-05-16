@@ -1,5 +1,6 @@
 #ifndef _EXTEND_JFF_
 #define _EXTEND_JFF_
+#include <stdlib.h>
 
 typedef uint64_t mword_t;
 
@@ -16,5 +17,10 @@ struct Class_c {
   size_t instanceSize;
   Method_t *methods;
 };
+
+mword_t invoke(Object_t obj, Class_t clazz, Invoke_t method, ...);
+
+//https://gcc.gnu.org/onlinedocs/cpp/Variadic-Macros.html
+#define super(x, ...) invoke(this, this->class, x, ##__VA_ARGS__)
 
 #endif

@@ -9,6 +9,8 @@
 #include <Object.h>
 #include <String.h>
 #include <Integer.h>
+#include <A.h>
+#include <B.h>
 
 void output(Object_t obj) {
   String_t str = send(obj, toString);
@@ -34,5 +36,15 @@ int main() {
 
   Integer_t i = send(Integer, new, 10);
   output(i);
+
+  A_t a = send(A, new, 1);
+  output(a);
+  printf("%d\n", send(a, test));
+
+  B_t b = send(B, new, 2);
+  output(b);
+  printf("%d\n", send(b, test));
+
+
 }
 

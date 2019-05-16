@@ -13,6 +13,7 @@ typedef enum {
   toCharArray,
   nextID,
   getId,
+  test,
   retain,
   release,
   _dummyMethod //This should be always defined last

@@ -3,7 +3,6 @@
 #include <extend/Object.h>
 #include <String.h>
 
-
 extern const Class_t StringMeta;
 
 void loadStringClass(Class_t class);
