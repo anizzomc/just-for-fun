@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-FILES=$(find ../build/src -name "*.c")
+FILES=$(find build/src -name "*.c")
 
 echo '
 /* This is auto-generated code. Edit at your own peril. */
