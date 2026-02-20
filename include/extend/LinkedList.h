@@ -1,0 +1,13 @@
+#ifndef _EXTEND_LINKED_LIST_H_
+#define _EXTEND_LINKED_LIST_H_
+
+#include <extend/Object.h>
+#include <LinkedList.h>
+
+extern const Class_t LinkedListClass;
+
+void loadLinkedListClass(Class_t class);
+
+void loadLinkedList(Class_t class);
+
+#endif

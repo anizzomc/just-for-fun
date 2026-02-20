@@ -9,6 +9,7 @@
 #include <Object.h>
 #include <String.h>
 #include <Integer.h>
+#include <LinkedList.h>
 #include <A.h>
 #include <B.h>
 
@@ -45,6 +46,16 @@ int main() {
   output(b);
   printf("%d\n", send(b, test));
 
+
+  LinkedList_t list = send(LinkedList, new);
+  send(list, add, str);
+  send(list, add, str1);
+  send(list, add, i);
+  Object_t first = send(list, get, 0);
+  output(first);
+  Object_t removed = send(list, delete, 2);
+  output(removed);
+  printf("%d\n", send(list, length));
 
 }
 

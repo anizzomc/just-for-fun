@@ -16,6 +16,9 @@ typedef enum {
   test,
   retain,
   release,
+  add,
+  get,
+  delete,
   _dummyMethod //This should be always defined last
 } Invoke_t;
 
