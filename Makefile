@@ -19,6 +19,14 @@ all:
 	cd build; make
 
 
+test: all
+	./testLoader.sh > tests/testRunner.c
+	gcc tests/src/*.c tests/cutest/CuTest.c tests/testRunner.c \
+		build/src/*.c build/JFF.c build/classLoader.c \
+		-Ibuild/inc/ -Itests/cutest/ -Ilib/D/include \
+		-Lbuild/lib/ -ld -o Test.out
+	./Test.out
+
 clean:
 	rm -rf build/
 

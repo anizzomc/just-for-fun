@@ -1,0 +1,48 @@
+/* This is auto-generated code. Edit at your own peril. */
+#include <stdio.h>
+#include <stdlib.h>
+#include <JFF.h>
+#include <CuTest.h>
+
+extern void TestLinkedList_new(CuTest*);
+extern void TestLinkedList_add(CuTest*);
+extern void TestLinkedList_get_outOfBounds(CuTest*);
+extern void TestLinkedList_delete(CuTest*);
+extern void TestLinkedList_delete_outOfBounds(CuTest*);
+extern void TestString_new(CuTest*);
+extern void TestString_length(CuTest*);
+extern void TestString_equals_same(CuTest*);
+extern void TestString_equals_different(CuTest*);
+
+void RunAllTests(void)
+{
+    CuString *output = CuStringNew();
+    CuSuite* suite = CuSuiteNew();
+
+    SUITE_ADD_TEST(suite, TestLinkedList_new);
+    SUITE_ADD_TEST(suite, TestLinkedList_add);
+    SUITE_ADD_TEST(suite, TestLinkedList_get_outOfBounds);
+    SUITE_ADD_TEST(suite, TestLinkedList_delete);
+    SUITE_ADD_TEST(suite, TestLinkedList_delete_outOfBounds);
+    SUITE_ADD_TEST(suite, TestString_new);
+    SUITE_ADD_TEST(suite, TestString_length);
+    SUITE_ADD_TEST(suite, TestString_equals_same);
+    SUITE_ADD_TEST(suite, TestString_equals_different);
+
+    CuSuiteRun(suite);
+    CuSuiteSummary(suite, output);
+    CuSuiteDetails(suite, output);
+    printf("%s\n", output->buffer);
+    int failed = suite->failCount;
+    CuStringDelete(output);
+    CuSuiteDelete(suite);
+    if (failed > 0) exit(1);
+}
+
+int main(void)
+{
+    JFF_init();
+    RunAllTests();
+    return 0;
+}
+

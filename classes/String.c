@@ -1,5 +1,6 @@
 #include <strings.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <JFF.h>
 #include <Object.h>
