@@ -65,6 +65,10 @@ static void _release(Object_t thiz, va_list* list) {
   D_mm_release(thiz);
 }
 
+static int _isNull(Object_t thiz, va_list* list) {
+  return false;
+}
+
 static char* _classToString(Class_t thiz, va_list* list) {
   return send(String, new, thiz->name);
 }
@@ -89,6 +93,7 @@ void loadObject(Class_t clazz) {
   clazz->methods[getClass] = (Method_t) &_getClass;
   clazz->methods[toString] = (Method_t) &_toString;
   clazz->methods[equals] = (Method_t) &_equals;
+  clazz->methods[isNull] = (Method_t) &_isNull;
 }
 
 void loadClass(Class_t clazz) {
