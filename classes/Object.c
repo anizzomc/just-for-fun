@@ -2,6 +2,7 @@
 #include <Object.h>
 #include <String.h>
 #include <extend/Object.h>
+#include <base/log.h>
 
 #include <stdlib.h>
 #include <strings.h>
@@ -19,6 +20,12 @@ const Class_t Class = &class_c;
 static const Class_t clazz = &object;
 
 static void _dealloc_handler(Object_t);
+
+static mword_t _methodNotDefined(Object_t thiz, va_list* list) {
+  ERROR("Method not defined!");
+  print_trace();
+  exit(0);
+}
 
 static Object_t _new(Class_t clazz, va_list* list) {
 
@@ -69,6 +76,11 @@ static int _isNull(Object_t thiz, va_list* list) {
   return false;
 }
 
+static int _respondsTo(Object_t thiz, va_list* list) {
+  Invoke_t method = va_arg(*list, Invoke_t);
+  return thiz->clazz->methods[method] != (Method_t) &_methodNotDefined;
+}
+
 static char* _classToString(Class_t thiz, va_list* list) {
   return send(String, new, thiz->name);
 }
@@ -86,6 +98,9 @@ void loadObject(Class_t clazz) {
 
   // Instance Methods
   clazz->methods = malloc(sizeof(Method_t)*_dummyMethod);
+  for (int i = 0; i < _dummyMethod; i++) {
+    clazz->methods[i] = (Method_t) &_methodNotDefined;
+  }
   clazz->methods[init] = (Method_t) &_init;
   clazz->methods[dealloc] = (Method_t) &_dealloc;
   clazz->methods[retain] = (Method_t) &_retain;
@@ -94,6 +109,7 @@ void loadObject(Class_t clazz) {
   clazz->methods[toString] = (Method_t) &_toString;
   clazz->methods[equals] = (Method_t) &_equals;
   clazz->methods[isNull] = (Method_t) &_isNull;
+  clazz->methods[respondsTo] = (Method_t) &_respondsTo;
 }
 
 void loadClass(Class_t clazz) {

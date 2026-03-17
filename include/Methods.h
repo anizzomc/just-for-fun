@@ -20,6 +20,7 @@ typedef enum {
   add,
   get,
   delete,
+  respondsTo,
   _dummyMethod //This should be always defined last
 } Invoke_t;
 

@@ -27,6 +27,19 @@ test: all
 		-Lbuild/lib/ -ld -o Test.out
 	./Test.out
 
+test-abort: all
+	gcc tests/abort/UndefinedMethodTest.c \
+		build/src/*.c build/JFF.c build/classLoader.c \
+		-Ibuild/inc/ -Ilib/D/include \
+		-Lbuild/lib/ -ld -o UndefinedMethod.out
+	./UndefinedMethod.out; \
+	if [ $$? -eq 0 ]; then \
+		echo "OK: Application aborted on undefined method call"; \
+	else \
+		echo "FAIL: Application did not abort on undefined method call"; \
+		exit 1; \
+	fi
+
 clean:
 	rm -rf build/
 
