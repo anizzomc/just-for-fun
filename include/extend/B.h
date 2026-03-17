@@ -5,8 +5,8 @@
 
 extern const Class_t BMeta;
 
-void loadBClass(Class_t class);
+void loadBClass(Class_t clazz);
 
-void loadB(Class_t class);
+void loadB(Class_t clazz);
 
 #endif

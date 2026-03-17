@@ -3,13 +3,13 @@
 #include <String.h>
 
 struct Integer_c {
-  struct Class_c* class;
+  struct Class_c* clazz;
   int value;
 };
 
 struct IntegerClass_c {
-  Class_t class;
-  Class_t superclass;
+  Class_t clazz;
+  Class_t superclazz;
   char *name;
   size_t instanceSize;
   Method_t *methods;
@@ -21,55 +21,55 @@ static struct Class_c integerMeta = {};
 const Class_t Integer = &integer;
 const Class_t IntegerClass = &integerMeta;
 
-static const Class_t class = &integer;
+static const Class_t clazz = &integer;
 
-static void _init(Integer_t this, va_list* list) {
+static void _init(Integer_t thiz, va_list* list) {
   int value = va_arg(*list, int);
-  this->value = value;
+  thiz->value = value;
 }
 
-static String_t _toString(Integer_t this, va_list* list) {
+static String_t _toString(Integer_t thiz, va_list* list) {
   char ret[64];
-  sprintf(ret, "%d", this->value);
+  sprintf(ret, "%d", thiz->value);
   return send(String, new, ret);
 }
 
-static int _equals(Integer_t this, va_list* list) {
+static int _equals(Integer_t thiz, va_list* list) {
   Integer_t other = va_arg(*list, Integer_t);
   if(other == NULL) {
     return false;
   }
 
-  if(this->class != other->class) {
+  if(thiz->clazz != other->clazz) {
     return false;
   }
 
-  return this->value == other->value;
+  return thiz->value == other->value;
 }
 
 
-void loadInteger(Class_t class) {
-  loadObject(class);
+void loadInteger(Class_t clazz) {
+  loadObject(clazz);
 
-  struct IntegerClass_c *clazz = class;
+  struct IntegerClass_c *ic = clazz;
 
-  clazz->class = IntegerClass;
-  clazz->superclass = Object;
-  clazz->name = "Integer";
-  clazz->instanceSize = sizeof(struct Integer_c);
+  ic->clazz = IntegerClass;
+  ic->superclazz = Object;
+  ic->name = "Integer";
+  ic->instanceSize = sizeof(struct Integer_c);
 
 
-  clazz->methods[init] = (Method_t) &_init;
-  clazz->methods[toString] = (Method_t) &_toString;
-  clazz->methods[equals] = (Method_t) &_equals;
- 
+  ic->methods[init] = (Method_t) &_init;
+  ic->methods[toString] = (Method_t) &_toString;
+  ic->methods[equals] = (Method_t) &_equals;
+
 }
 
 
-void loadIntegerClass(Class_t class) {
-  loadClass(class);
+void loadIntegerClass(Class_t clazz) {
+  loadClass(clazz);
 
-  class->name = "IntegerClass";
+  clazz->name = "IntegerClass";
 }
 
 

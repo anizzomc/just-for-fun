@@ -3,13 +3,13 @@
 #include <String.h>
 
 struct Entity_c {
-  struct Class_c* class;
+  struct Class_c* clazz;
   int id;
 };
 
 struct EntityClass_c {
-  Class_t class;
-  Class_t superclass;
+  Class_t clazz;
+  Class_t superclazz;
   char *name;
   size_t instanceSize;
   Method_t *methods;
@@ -24,73 +24,72 @@ static struct Class_c entityClass = {};
 const Class_t Entity = &entity;
 const Class_t EntityClass = &entityClass;
 
-static const Class_t class = &entity;
+static const Class_t clazz = &entity;
 
-static void _init(Entity_t this, va_list* list) {
-  this->id = send(Entity, nextID);
+static void _init(Entity_t thiz, va_list* list) {
+  thiz->id = send(Entity, nextID);
 }
 
-static String_t _toString(Entity_t this, va_list* list) {
+static String_t _toString(Entity_t thiz, va_list* list) {
   char ret[64];
-  sprintf(ret, "Entity(%d)", this->id);
+  sprintf(ret, "Entity(%d)", thiz->id);
   return send(String, new, ret);
 }
 
-static int _equals(Entity_t this, va_list* list) {
+static int _equals(Entity_t thiz, va_list* list) {
   Entity_t other = va_arg(*list, Entity_t);
   if(other == NULL) {
     return false;
   }
 
-  if(this->class != other->class) {
+  if(thiz->clazz != other->clazz) {
     return false;
   }
 
-  return this->id == other->id;
+  return thiz->id == other->id;
 }
 
-static int _getId(Entity_t this, va_list* list) {
-  return this->id;
+static int _getId(Entity_t thiz, va_list* list) {
+  return thiz->id;
 }
 
-static int _nextID(EntityClass_t this, va_list* list) {
-  return this->idCounter++;
+static int _nextID(EntityClass_t thiz, va_list* list) {
+  return thiz->idCounter++;
 }
 
 
-void loadEntity(Class_t class) {
-  loadObject(class);
+void loadEntity(Class_t clazz) {
+  loadObject(clazz);
 
-  struct EntityClass_c *clazz = class;
+  struct EntityClass_c *ec = clazz;
 
   // Basic Properties
-  clazz->class = EntityClass;
-  clazz->superclass = Object;
-  clazz->name = "Entity";
-  clazz->instanceSize = sizeof(struct Entity_c);
+  ec->clazz = EntityClass;
+  ec->superclazz = Object;
+  ec->name = "Entity";
+  ec->instanceSize = sizeof(struct Entity_c);
 
   // Custom Properties
-  clazz->idCounter = 1;
+  ec->idCounter = 1;
 
   // Instance Methods
-  clazz->methods[init] = (Method_t) &_init;
-  clazz->methods[toString] = (Method_t) &_toString;
-  clazz->methods[equals] = (Method_t) &_equals;
-  clazz->methods[getId] = (Method_t) &_getId;
+  ec->methods[init] = (Method_t) &_init;
+  ec->methods[toString] = (Method_t) &_toString;
+  ec->methods[equals] = (Method_t) &_equals;
+  ec->methods[getId] = (Method_t) &_getId;
 }
 
 
-void loadEntityClass(Class_t class) {
-  loadClass(class);
+void loadEntityClass(Class_t clazz) {
+  loadClass(clazz);
 
-  class->name = "EntityClass";
+  clazz->name = "EntityClass";
   // Class Methods of Entity
-  class->methods[nextID] = (Method_t)&_nextID;
+  clazz->methods[nextID] = (Method_t)&_nextID;
 }
 
 void ClassLoader_Entity() {
   loadEntity(Entity);
   loadEntityClass(EntityClass);
 }
-
 

@@ -5,8 +5,8 @@
 
 extern const Class_t StringMeta;
 
-void loadStringClass(Class_t class);
+void loadStringClass(Class_t clazz);
 
-void loadString(Class_t class);
+void loadString(Class_t clazz);
 
 #endif

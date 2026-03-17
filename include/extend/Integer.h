@@ -6,8 +6,8 @@
 
 extern const Class_t IntegerMeta;
 
-void loadIntegerClass(Class_t class);
+void loadIntegerClass(Class_t clazz);
 
-void loadInteger(Class_t class);
+void loadInteger(Class_t clazz);
 
 #endif

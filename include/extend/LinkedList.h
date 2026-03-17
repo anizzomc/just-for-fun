@@ -6,8 +6,8 @@
 
 extern const Class_t LinkedListClass;
 
-void loadLinkedListClass(Class_t class);
+void loadLinkedListClass(Class_t clazz);
 
-void loadLinkedList(Class_t class);
+void loadLinkedList(Class_t clazz);
 
 #endif

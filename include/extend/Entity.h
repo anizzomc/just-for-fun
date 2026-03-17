@@ -12,8 +12,8 @@
 
 extern const Class_t EntityClass;
 
-void loadEntityClass(Class_t class);
+void loadEntityClass(Class_t clazz);
 
-void loadEntity(Class_t class);
+void loadEntity(Class_t clazz);
 
 #endif

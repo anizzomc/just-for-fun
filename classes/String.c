@@ -12,13 +12,13 @@
 #include <mm_pool.h>
 
 struct String_c {
-  struct Class_c* class;
+  struct Class_c* clazz;
   char *str;
 };
 
 struct StringClass_c {
-  Class_t class;
-  Class_t superclass;
+  Class_t clazz;
+  Class_t superclazz;
   char *name;
   size_t instanceSize;
   Method_t *methods;
@@ -31,66 +31,66 @@ static struct Class_c stringClass = {};
 const Class_t String = &string;
 const Class_t StringClass = &stringClass;
 
-static const Class_t class = &string;
+static const Class_t clazz = &string;
 
-static char* _toCharArray(String_t this, va_list* list) {
-  char *ret = D_mm_pool_add(D_mm_alloc(strlen(this->str)+1, NULL));
-  strcpy(ret, this->str);
+static char* _toCharArray(String_t thiz, va_list* list) {
+  char *ret = D_mm_pool_add(D_mm_alloc(strlen(thiz->str)+1, NULL));
+  strcpy(ret, thiz->str);
   return ret;
 }
 
-static String_t _toString(String_t this, va_list* list) {
-  return this;
+static String_t _toString(String_t thiz, va_list* list) {
+  return thiz;
 }
 
-static int _equals(String_t this, va_list* list) {
+static int _equals(String_t thiz, va_list* list) {
   String_t other = va_arg(*list, String_t);
   if(other == NULL) {
     return false;
   }
-  if(this->class != other->class) {
+  if(thiz->clazz != other->clazz) {
     return false;
   }
 
-  return strcmp(this->str, other->str) == 0;
+  return strcmp(thiz->str, other->str) == 0;
 }
 
-static int _length(String_t this, va_list* list) {
-  return strlen(this->str);
+static int _length(String_t thiz, va_list* list) {
+  return strlen(thiz->str);
 }
 
 
-static void _init(String_t this, va_list* list) {
+static void _init(String_t thiz, va_list* list) {
   char *str = va_arg(*list, char*);
-  this->str = malloc(strlen(str)+1); //TODO: Collect memory
-  strcpy(this->str, str);
+  thiz->str = malloc(strlen(str)+1); //TODO: Collect memory when deallocking the object
+  strcpy(thiz->str, str);
 }
 
 
-void loadString(Class_t class) {
-  loadObject(class);
+void loadString(Class_t clazz) {
+  loadObject(clazz);
 
-  struct StringClass_c *clazz = class;
+  struct StringClass_c *sc = clazz;
 
   // Basic Properties
-  clazz->class = StringClass;
-  clazz->superclass = Object;
-  clazz->name = "String";
-  clazz->instanceSize = sizeof(struct String_c);
+  sc->clazz = StringClass;
+  sc->superclazz = Object;
+  sc->name = "String";
+  sc->instanceSize = sizeof(struct String_c);
 
 
   // Instance Methods
-  clazz->methods[init] = (Method_t) &_init;
-  clazz->methods[toString] = (Method_t) &_toString;
-  clazz->methods[toCharArray] = (Method_t) &_toCharArray;
-  clazz->methods[equals] = (Method_t) &_equals;
-  clazz->methods[length] = (Method_t) &_length;
+  sc->methods[init] = (Method_t) &_init;
+  sc->methods[toString] = (Method_t) &_toString;
+  sc->methods[toCharArray] = (Method_t) &_toCharArray;
+  sc->methods[equals] = (Method_t) &_equals;
+  sc->methods[length] = (Method_t) &_length;
 }
 
-void loadStringClass(Class_t class) {
-  loadClass(class);
+void loadStringClass(Class_t clazz) {
+  loadClass(clazz);
 
-  class->name = "StringClass";
+  clazz->name = "StringClass";
 
 }
 

@@ -11,8 +11,8 @@
 
 extern const Class_t Class;
 
-void loadObject(Class_t class);
+void loadObject(Class_t clazz);
 
-void loadClass(Class_t class);
+void loadClass(Class_t clazz);
 
 #endif

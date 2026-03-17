@@ -12,7 +12,7 @@ D_mm_pool_conf pool_conf = {100, 100};
 mword_t invoke(Object_t obj, Class_t clazz, Invoke_t method, ...) {
   va_list list;
   va_start(list, method);
-  mword_t ret = clazz->superclass->methods[method](obj, &list);
+  mword_t ret = clazz->superclazz->methods[method](obj, &list);
   va_end(list);
   return ret;
 }
@@ -21,7 +21,7 @@ mword_t send(Object_t obj, Invoke_t method, ...) {
   va_list list;
   va_start(list, method);
 
-  mword_t ret = obj->class->methods[method](obj, &list);
+  mword_t ret = obj->clazz->methods[method](obj, &list);
 
   va_end(list);
   return ret;

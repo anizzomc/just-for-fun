@@ -10,7 +10,7 @@ This is an object-oriented programing framework for C, which supports
 Objects are represented by a pointer to a `struct` that has at least a reference to it's defining class `class`
 ```
 struct String_c {
-  struct Class_c* class;
+  struct Class_c* clazz;
   char *str;
 };
 ```
@@ -22,14 +22,14 @@ Classes allow the creation of new objects and invocation of methods.
 
 ```
 struct StringClass_c {
-  Class_t class;
-  Class_t superclass;
+  Class_t clazz;
+  Class_t superclazz;
   char *name;
   size_t instanceSize;
   Method_t *methods;
 };
 ```
-The code `obj->class[method](obj, arg)` allows to execute the `method` associated with the `obj` over such object.
+The code `obj->clazz[method](obj, arg)` allows to execute the `method` associated with the `obj` over such object.
 Classes also have their own class, so it can execute methods such as `new`
 
 ### Methods : Polymorphism and Inheritance
@@ -70,6 +70,7 @@ The class `String` which extends `Object` has following associated files:
 ## How to create a new Class
 - To create a new Class, you need to create the required files associated to the Class: the source-code, the class header and the extension header
 - Unless stated, you need to assume it extends `Object`.
+- The class header should state which is the super class, and list all the methods that this class will implement.
 - The source-code file should define the required structs and all extension functions
 
 ## How to add a new Method

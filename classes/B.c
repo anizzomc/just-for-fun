@@ -12,13 +12,13 @@
 
 
 struct B_c {
-  struct Class_c* class;
+  struct Class_c* clazz;
   int value;
 };
 
 struct BClass_c {
-  Class_t class;
-  Class_t superclass;
+  Class_t clazz;
+  Class_t superclazz;
   char *name;
   size_t instanceSize;
   Method_t *methods;
@@ -30,48 +30,47 @@ static struct Class_c bClass = {};
 const Class_t B = &b;
 const Class_t BClass = &bClass;
 
-static const Class_t class = &b;
+static const Class_t clazz = &b;
 
 
-static void _init(B_t this, va_list* list) {
-  this->value = va_arg(*list, int);  
+static void _init(B_t thiz, va_list* list) {
+  thiz->value = va_arg(*list, int);
 }
 
-static String_t _toString(B_t this, va_list* list) {
+static String_t _toString(B_t thiz, va_list* list) {
   char buffer[20];
-  sprintf(buffer, "B(%d)", this->value);
+  sprintf(buffer, "B(%d)", thiz->value);
   return send(String, new, buffer);
 }
 
-static int _test(B_t this, va_list* list) {
+static int _test(B_t thiz, va_list* list) {
   return super(test) + 1;
 }
 
 
-void loadB(Class_t class) {
-  loadA(class);
+void loadB(Class_t clazz) {
+  loadA(clazz);
 
-  struct BClass_c *clazz = class;
+  struct BClass_c *bc = clazz;
 
   // Basic Properties
-  clazz->class = BClass;
-  clazz->superclass = A;
-  clazz->name = "B";
-  clazz->instanceSize = sizeof(struct B_c);
+  bc->clazz = BClass;
+  bc->superclazz = A;
+  bc->name = "B";
+  bc->instanceSize = sizeof(struct B_c);
 
   // Instance Methods
-  clazz->methods[init] = (Method_t) &_init;
-  clazz->methods[toString] = (Method_t) &_toString;
-  clazz->methods[test] = (Method_t) &_test;
+  bc->methods[init] = (Method_t) &_init;
+  bc->methods[toString] = (Method_t) &_toString;
+  bc->methods[test] = (Method_t) &_test;
 }
 
-void loadBClass(Class_t class) {
-  loadClass(class);
-  class->name = "BClass";
+void loadBClass(Class_t clazz) {
+  loadClass(clazz);
+  clazz->name = "BClass";
 }
 
 void ClassLoader_B() {
   loadB(B);
   loadBClass(BClass);
 }
-

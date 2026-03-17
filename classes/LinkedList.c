@@ -16,14 +16,14 @@ struct Node_c {
 };
 
 struct LinkedList_c {
-  struct Class_c* class;
+  struct Class_c* clazz;
   struct Node_c* head;
   int size;
 };
 
 struct LinkedListClass_c {
-  Class_t class;
-  Class_t superclass;
+  Class_t clazz;
+  Class_t superclazz;
   char *name;
   size_t instanceSize;
   Method_t *methods;
@@ -35,44 +35,44 @@ static struct Class_c linkedListClass = {};
 const Class_t LinkedList = (Class_t) &linkedList;
 const Class_t LinkedListClass = &linkedListClass;
 
-static const Class_t class = (Class_t) &linkedList;
+static const Class_t clazz = (Class_t) &linkedList;
 
 
-static void _init(LinkedList_t this, va_list* list) {
-  this->head = NULL;
-  this->size = 0;
+static void _init(LinkedList_t thiz, va_list* list) {
+  thiz->head = NULL;
+  thiz->size = 0;
 }
 
 /* Appends obj at the end of the list */
-static void _add(LinkedList_t this, va_list* list) {
+static void _add(LinkedList_t thiz, va_list* list) {
   Object_t obj = va_arg(*list, Object_t);
 
   struct Node_c* node = malloc(sizeof(struct Node_c));
   node->data = obj;
   node->next = NULL;
 
-  if (this->head == NULL) {
-    this->head = node;
+  if (thiz->head == NULL) {
+    thiz->head = node;
   } else {
-    struct Node_c* current = this->head;
+    struct Node_c* current = thiz->head;
     while (current->next != NULL) {
       current = current->next;
     }
     current->next = node;
   }
 
-  this->size++;
+  thiz->size++;
 }
 
 /* Returns the object at position index, or NULL if out of bounds */
-static Object_t _get(LinkedList_t this, va_list* list) {
+static Object_t _get(LinkedList_t thiz, va_list* list) {
   int index = va_arg(*list, int);
 
-  if (index < 0 || index >= this->size) {
+  if (index < 0 || index >= thiz->size) {
     return NULL;
   }
 
-  struct Node_c* current = this->head;
+  struct Node_c* current = thiz->head;
   for (int i = 0; i < index; i++) {
     current = current->next;
   }
@@ -81,20 +81,20 @@ static Object_t _get(LinkedList_t this, va_list* list) {
 }
 
 /* Removes the node at position index and returns the stored object, or NULL if out of bounds */
-static Object_t _delete(LinkedList_t this, va_list* list) {
+static Object_t _delete(LinkedList_t thiz, va_list* list) {
   int index = va_arg(*list, int);
 
-  if (index < 0 || index >= this->size) {
+  if (index < 0 || index >= thiz->size) {
     return NULL;
   }
 
   struct Node_c* removed;
 
   if (index == 0) {
-    removed = this->head;
-    this->head = this->head->next;
+    removed = thiz->head;
+    thiz->head = thiz->head->next;
   } else {
-    struct Node_c* prev = this->head;
+    struct Node_c* prev = thiz->head;
     for (int i = 0; i < index - 1; i++) {
       prev = prev->next;
     }
@@ -104,54 +104,54 @@ static Object_t _delete(LinkedList_t this, va_list* list) {
 
   Object_t data = removed->data;
   free(removed);
-  this->size--;
+  thiz->size--;
   return data;
 }
 
-static int _length(LinkedList_t this, va_list* list) {
-  return this->size;
+static int _length(LinkedList_t thiz, va_list* list) {
+  return thiz->size;
 }
 
-static void _dealloc(LinkedList_t this, va_list* list) {
-  struct Node_c* current = this->head;
+static void _dealloc(LinkedList_t thiz, va_list* list) {
+  struct Node_c* current = thiz->head;
   while (current != NULL) {
     struct Node_c* next = current->next;
     free(current);
     current = next;
   }
-  this->head = NULL;
-  this->size = 0;
+  thiz->head = NULL;
+  thiz->size = 0;
 }
 
-static String_t _toString(LinkedList_t this, va_list* list) {
+static String_t _toString(LinkedList_t thiz, va_list* list) {
   char buffer[64];
-  sprintf(buffer, "LinkedList[size=%d]", this->size);
+  sprintf(buffer, "LinkedList[size=%d]", thiz->size);
   return send(String, new, buffer);
 }
 
 
-void loadLinkedList(Class_t class) {
-  loadObject(class);
+void loadLinkedList(Class_t clazz) {
+  loadObject(clazz);
 
-  struct LinkedListClass_c *clazz = (struct LinkedListClass_c*) class;
+  struct LinkedListClass_c *lc = (struct LinkedListClass_c*) clazz;
 
-  clazz->class = LinkedListClass;
-  clazz->superclass = Object;
-  clazz->name = "LinkedList";
-  clazz->instanceSize = sizeof(struct LinkedList_c);
+  lc->clazz = LinkedListClass;
+  lc->superclazz = Object;
+  lc->name = "LinkedList";
+  lc->instanceSize = sizeof(struct LinkedList_c);
 
-  clazz->methods[init]     = (Method_t) &_init;
-  clazz->methods[dealloc]  = (Method_t) &_dealloc;
-  clazz->methods[toString] = (Method_t) &_toString;
-  clazz->methods[length]   = (Method_t) &_length;
-  clazz->methods[add]      = (Method_t) &_add;
-  clazz->methods[get]      = (Method_t) &_get;
-  clazz->methods[delete]   = (Method_t) &_delete;
+  lc->methods[init]     = (Method_t) &_init;
+  lc->methods[dealloc]  = (Method_t) &_dealloc;
+  lc->methods[toString] = (Method_t) &_toString;
+  lc->methods[length]   = (Method_t) &_length;
+  lc->methods[add]      = (Method_t) &_add;
+  lc->methods[get]      = (Method_t) &_get;
+  lc->methods[delete]   = (Method_t) &_delete;
 }
 
-void loadLinkedListClass(Class_t class) {
-  loadClass(class);
-  class->name = "LinkedListClass";
+void loadLinkedListClass(Class_t clazz) {
+  loadClass(clazz);
+  clazz->name = "LinkedListClass";
 }
 
 void ClassLoader_LinkedList() {
