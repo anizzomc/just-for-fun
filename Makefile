@@ -33,7 +33,7 @@ test-abort: all
 		-Ibuild/inc/ -Ilib/D/include \
 		-Lbuild/lib/ -ld -o UndefinedMethod.out
 	./UndefinedMethod.out; \
-	if [ $$? -eq 0 ]; then \
+	if [ $$? -eq 1 ]; then \
 		echo "OK: Application aborted on undefined method call"; \
 	else \
 		echo "FAIL: Application did not abort on undefined method call"; \

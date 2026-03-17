@@ -11,5 +11,5 @@ int main() {
   send((Object_t) str, nextID);
 
   // Should never be reached
-  exit(1);
+  exit(2);
 }
