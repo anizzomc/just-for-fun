@@ -8,12 +8,7 @@
 #include <String.h>
 #include <extend/LinkedList.h>
 #include <LinkedList.h>
-
-/* Internal node — not a JFF object, managed manually */
-struct Node_c {
-  Object_t data;
-  struct Node_c* next;
-};
+#include <LinkedListIterator.h>
 
 struct LinkedList_c {
   struct Class_c* clazz;
@@ -125,6 +120,10 @@ static void _dealloc(LinkedList_t thiz, va_list* list) {
   thiz->size = 0;
 }
 
+static Object_t _iterator(LinkedList_t thiz, va_list* list) {
+  return (Object_t) send(LinkedListIterator, new, thiz->head);
+}
+
 static String_t _toString(LinkedList_t thiz, va_list* list) {
   char buffer[64];
   sprintf(buffer, "LinkedList[size=%d]", thiz->size);
@@ -149,6 +148,7 @@ void loadLinkedList(Class_t clazz) {
   lc->methods[add]      = (Method_t) &_add;
   lc->methods[get]      = (Method_t) &_get;
   lc->methods[delete]   = (Method_t) &_delete;
+  lc->methods[iterator] = (Method_t) &_iterator;
 }
 
 void loadLinkedListClass(Class_t clazz) {

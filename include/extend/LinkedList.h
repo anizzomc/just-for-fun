@@ -4,6 +4,12 @@
 #include <extend/Object.h>
 #include <LinkedList.h>
 
+/* Internal node — shared with LinkedListIterator */
+struct Node_c {
+  Object_t data;
+  struct Node_c* next;
+};
+
 extern const Class_t LinkedListClass;
 
 void loadLinkedListClass(Class_t clazz);

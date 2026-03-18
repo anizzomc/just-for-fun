@@ -22,6 +22,9 @@ extern void TestString_new(CuTest*);
 extern void TestString_length(CuTest*);
 extern void TestString_equals_same(CuTest*);
 extern void TestString_equals_different(CuTest*);
+extern void TestLinkedListIterator_emptyList(CuTest*);
+extern void TestLinkedListIterator_traversesInOrder(CuTest*);
+extern void TestLinkedListIterator_hasNextFalseWhenExhausted(CuTest*);
 
 void RunAllTests(void)
 {
@@ -46,6 +49,9 @@ void RunAllTests(void)
     SUITE_ADD_TEST(suite, TestString_length);
     SUITE_ADD_TEST(suite, TestString_equals_same);
     SUITE_ADD_TEST(suite, TestString_equals_different);
+    SUITE_ADD_TEST(suite, TestLinkedListIterator_emptyList);
+    SUITE_ADD_TEST(suite, TestLinkedListIterator_traversesInOrder);
+    SUITE_ADD_TEST(suite, TestLinkedListIterator_hasNextFalseWhenExhausted);
 
     CuSuiteRun(suite);
     CuSuiteSummary(suite, output);

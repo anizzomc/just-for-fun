@@ -21,6 +21,9 @@ typedef enum {
   add,
   get,
   delete,
+  iterator,
+  hasNext,
+  next,
   respondsTo,
   _dummyMethod //This should be always defined last
 } Invoke_t;
