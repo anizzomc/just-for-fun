@@ -18,6 +18,7 @@ struct Node_c {
 struct LinkedList_c {
   struct Class_c* clazz;
   struct Node_c* head;
+  struct Node_c* tail;
   int size;
 };
 
@@ -40,6 +41,7 @@ static const Class_t clazz = (Class_t) &linkedList;
 
 static void _init(LinkedList_t thiz, va_list* list) {
   thiz->head = NULL;
+  thiz->tail = NULL;
   thiz->size = 0;
 }
 
@@ -54,12 +56,10 @@ static void _add(LinkedList_t thiz, va_list* list) {
 
   if (thiz->head == NULL) {
     thiz->head = node;
+    thiz->tail = node;
   } else {
-    struct Node_c* current = thiz->head;
-    while (current->next != NULL) {
-      current = current->next;
-    }
-    current->next = node;
+   thiz->tail->next = node;
+   thiz->tail = node;
   }
 
   thiz->size++;

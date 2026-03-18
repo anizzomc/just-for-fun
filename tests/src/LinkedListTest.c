@@ -1,3 +1,5 @@
+#include <time.h>
+
 #include <JFF.h>
 #include <LinkedList.h>
 #include <String.h>
@@ -82,6 +84,27 @@ void TestLinkedList_delete_does_not_release_item(CuTest* tc) {
     // back to the caller without releasing. It is the receiver's responsibility
     // to call release on the returned object when it is done with it.
     CuAssertIntEquals(tc, 2, (int) send((Object_t) s, refCount));
+}
+
+void TestLinkedList_add_isO1(CuTest* tc) {
+    // Proves that add is O(1) by appending a large number of items and
+    // measuring elapsed time. Without a tail pointer, each add would traverse
+    // the full list, making N adds O(N²) in total — visibly slow for large N.
+    // With a tail pointer, each add is O(1) and N adds complete in O(N) time.
+    const int N = 100000;
+    const double MAX_SECONDS = 1.0;
+
+    LinkedList_t list = (LinkedList_t) send(LinkedList, new);
+    String_t item = (String_t) send(String, new, "item");
+
+    clock_t start = clock();
+    for (int i = 0; i < N; i++) {
+        send((Object_t) list, add, item);
+    }
+    double elapsed = (double)(clock() - start) / CLOCKS_PER_SEC;
+
+    CuAssertIntEquals(tc, N, (int) send((Object_t) list, length));
+    CuAssertTrue(tc, elapsed < MAX_SECONDS);
 }
 
 void TestLinkedList_delete_outOfBounds(CuTest* tc) {
