@@ -67,14 +67,16 @@ The class `String` which extends `Object` has following associated files:
     - include/extend/String.h: it defines what functions are necessary to made visible for the class initializer and, any extending class.
     - classes/String.c : has the implementation of the `String` class. It includes the headers of itself and Object class.
 
-## How to create a new Class
+#### How to create a new Class
 - To create a new Class, you need to create the required files associated to the Class: the source-code, the class header and the extension header
 - Unless stated, you need to assume it extends `Object`.
 - The class header should state which is the super class, and list all the methods that this class will implement.
 - The source-code file should define the required structs and all extension functions
 
-## How to add a new Method
+#### How to add a new Method
 - You need to add the name of the method into enum `Invoke_t` in the `include/Methods.h` file. Make sure it is not the last entry.
 - The implementation of such method has to be treated as a private function in the source-code file, prefixed with `static` and with `_`
 
 
+### Commit and Push
+- When commiting files, make sure you include the test files. For example the testRunner.c should be included.
