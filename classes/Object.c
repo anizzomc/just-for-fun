@@ -24,7 +24,7 @@ static void _dealloc_handler(Object_t);
 static mword_t _methodNotDefined(Object_t thiz, va_list* list) {
   ERROR("Method not defined!");
   print_trace();
-  exit(0);
+  exit(1);
 }
 
 static Object_t _new(Class_t clazz, va_list* list) {
