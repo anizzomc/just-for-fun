@@ -4,6 +4,11 @@
 #include <JFF.h>
 #include <CuTest.h>
 
+extern void TestNull_isSingleton(CuTest*);
+extern void TestNull_isNull_returnsTrue(CuTest*);
+extern void TestNull_isNull_otherObjectsReturnFalse(CuTest*);
+extern void TestNull_toString(CuTest*);
+extern void TestNull_getClass(CuTest*);
 extern void TestLinkedList_new(CuTest*);
 extern void TestLinkedList_add(CuTest*);
 extern void TestLinkedList_get_outOfBounds(CuTest*);
@@ -19,6 +24,11 @@ void RunAllTests(void)
     CuString *output = CuStringNew();
     CuSuite* suite = CuSuiteNew();
 
+    SUITE_ADD_TEST(suite, TestNull_isSingleton);
+    SUITE_ADD_TEST(suite, TestNull_isNull_returnsTrue);
+    SUITE_ADD_TEST(suite, TestNull_isNull_otherObjectsReturnFalse);
+    SUITE_ADD_TEST(suite, TestNull_toString);
+    SUITE_ADD_TEST(suite, TestNull_getClass);
     SUITE_ADD_TEST(suite, TestLinkedList_new);
     SUITE_ADD_TEST(suite, TestLinkedList_add);
     SUITE_ADD_TEST(suite, TestLinkedList_get_outOfBounds);
