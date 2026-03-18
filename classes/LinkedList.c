@@ -49,6 +49,7 @@ static void _add(LinkedList_t thiz, va_list* list) {
 
   struct Node_c* node = malloc(sizeof(struct Node_c));
   node->data = obj;
+  send(obj, retain);
   node->next = NULL;
 
   if (thiz->head == NULL) {
@@ -116,7 +117,8 @@ static void _dealloc(LinkedList_t thiz, va_list* list) {
   struct Node_c* current = thiz->head;
   while (current != NULL) {
     struct Node_c* next = current->next;
-    free(current);
+    send(current->data, release);
+	free(current);
     current = next;
   }
   thiz->head = NULL;

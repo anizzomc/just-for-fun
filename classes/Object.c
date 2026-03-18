@@ -72,6 +72,10 @@ static void _release(Object_t thiz, va_list* list) {
   D_mm_release(thiz);
 }
 
+static unsigned _refCount(Object_t thiz, va_list* list) {
+  return D_mm_retain_count(thiz);
+}
+
 static int _isNull(Object_t thiz, va_list* list) {
   return false;
 }
@@ -105,6 +109,7 @@ void loadObject(Class_t clazz) {
   clazz->methods[dealloc] = (Method_t) &_dealloc;
   clazz->methods[retain] = (Method_t) &_retain;
   clazz->methods[release] = (Method_t) &_release;
+  clazz->methods[refCount] = (Method_t) &_refCount;
   clazz->methods[getClass] = (Method_t) &_getClass;
   clazz->methods[toString] = (Method_t) &_toString;
   clazz->methods[equals] = (Method_t) &_equals;

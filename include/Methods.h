@@ -16,6 +16,7 @@ typedef enum {
   test,
   retain,
   release,
+  refCount,
   isNull,
   add,
   get,
