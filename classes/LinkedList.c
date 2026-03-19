@@ -9,6 +9,7 @@
 #include <extend/LinkedList.h>
 #include <LinkedList.h>
 #include <LinkedListIterator.h>
+#include <base/log.h>
 
 struct LinkedList_c {
   struct Class_c* clazz;
@@ -60,12 +61,16 @@ static void _add(LinkedList_t thiz, va_list* list) {
   thiz->size++;
 }
 
-/* Returns the object at position index, or NULL if out of bounds */
+/* Returns the object at position index, aborts if out of bounds */
 static Object_t _get(LinkedList_t thiz, va_list* list) {
   int index = va_arg(*list, int);
 
   if (index < 0 || index >= thiz->size) {
-    return NULL;
+    char buffer[128];
+    sprintf(buffer, "LinkedList index out of bounds: %d (size=%d)", index, thiz->size);
+    ERROR(buffer);
+    print_trace();
+    exit(1);
   }
 
   struct Node_c* current = thiz->head;
@@ -76,12 +81,16 @@ static Object_t _get(LinkedList_t thiz, va_list* list) {
   return current->data;
 }
 
-/* Removes the node at position index and returns the stored object, or NULL if out of bounds */
+/* Removes the node at position index and returns the stored object, aborts if out of bounds */
 static Object_t _delete(LinkedList_t thiz, va_list* list) {
   int index = va_arg(*list, int);
 
   if (index < 0 || index >= thiz->size) {
-    return NULL;
+    char buffer[128];
+    sprintf(buffer, "LinkedList index out of bounds: %d (size=%d)", index, thiz->size);
+    ERROR(buffer);
+    print_trace();
+    exit(1);
   }
 
   struct Node_c* removed;

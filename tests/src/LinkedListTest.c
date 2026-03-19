@@ -26,14 +26,6 @@ void TestLinkedList_add(CuTest* tc) {
     CuAssertTrue(tc, (Object_t) send((Object_t) list, get, 1) == (Object_t) s2);
 }
 
-void TestLinkedList_get_outOfBounds(CuTest* tc) {
-    LinkedList_t list = (LinkedList_t) send(LinkedList, new);
-    String_t s = (String_t) send(String, new, "item");
-    send((Object_t) list, add, s);
-
-    CuAssertTrue(tc, (Object_t) send((Object_t) list, get, -1) == NULL);
-    CuAssertTrue(tc, (Object_t) send((Object_t) list, get, 1) == NULL);
-}
 
 void TestLinkedList_delete(CuTest* tc) {
     LinkedList_t list = (LinkedList_t) send(LinkedList, new);
@@ -107,12 +99,3 @@ void TestLinkedList_add_isO1(CuTest* tc) {
     CuAssertTrue(tc, elapsed < MAX_SECONDS);
 }
 
-void TestLinkedList_delete_outOfBounds(CuTest* tc) {
-    LinkedList_t list = (LinkedList_t) send(LinkedList, new);
-    String_t s = (String_t) send(String, new, "item");
-    send((Object_t) list, add, s);
-
-    CuAssertTrue(tc, (Object_t) send((Object_t) list, delete, -1) == NULL);
-    CuAssertTrue(tc, (Object_t) send((Object_t) list, delete, 1) == NULL);
-    CuAssertIntEquals(tc, 1, (int) send((Object_t) list, length));
-}
