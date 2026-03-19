@@ -53,6 +53,7 @@ and enum, so, polymorphism is achieved. If a method is not overriden, then it is
 
 ### Limitations
 - Each class needs to re-define the members of the super-class. This is because `struct` can't be extended natively.
+- There are no private methods. In any case, what is possible is to have private functions, but those might break the Polymorphism
 
 #### Project Structure
 - The folder `classes` contains the source code (.c) for each class. 
